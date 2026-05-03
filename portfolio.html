@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Javeria Rahim — Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #0a0a0f;
+      --surface: #12121a;
+      --card: #1a1a26;
+      --border: #2a2a3d;
+      --accent: #00d4aa;
+      --accent2: #7c6af7;
+      --text: #e8e8f0;
+      --muted: #8888aa;
+      --white: #ffffff;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    /* Animated background grid */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0,212,170,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,212,170,0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 60px;
+      background: rgba(10,10,15,0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 1px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 13px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover { color: var(--accent); }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 140px 60px 80px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-content { max-width: 700px; }
+
+    .hero-tag {
+      display: inline-block;
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--accent);
+      border: 1px solid var(--accent);
+      padding: 6px 16px;
+      border-radius: 2px;
+      margin-bottom: 28px;
+      animation: fadeUp 0.8s ease both;
+    }
+
+    .hero-name {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(52px, 8vw, 88px);
+      font-weight: 900;
+      line-height: 1;
+      color: var(--white);
+      animation: fadeUp 0.8s 0.15s ease both;
+    }
+
+    .hero-name span { color: var(--accent); }
+
+    .hero-roles {
+      margin-top: 20px;
+      font-size: 16px;
+      color: var(--muted);
+      letter-spacing: 0.5px;
+      animation: fadeUp 0.8s 0.3s ease both;
+    }
+
+    .hero-roles span {
+      color: var(--accent2);
+      font-weight: 500;
+    }
+
+    .hero-bio {
+      margin-top: 28px;
+      font-size: 15px;
+      line-height: 1.8;
+      color: var(--muted);
+      max-width: 560px;
+      animation: fadeUp 0.8s 0.45s ease both;
+    }
+
+    .hero-actions {
+      margin-top: 44px;
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      animation: fadeUp 0.8s 0.6s ease both;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #000;
+      padding: 14px 32px;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 2px;
+      transition: all 0.3s;
+    }
+
+    .btn-primary:hover {
+      background: #00f0c0;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(0,212,170,0.3);
+    }
+
+    .btn-outline {
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 14px 32px;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 2px;
+      transition: all 0.3s;
+    }
+
+    .btn-outline:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    .hero-glow {
+      position: absolute;
+      right: -100px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(0,212,170,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    /* ── SECTIONS ── */
+    section {
+      padding: 100px 60px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .section-label {
+      font-size: 11px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(32px, 5vw, 52px);
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 60px;
+    }
+
+    .section-title span { color: var(--accent); }
+
+    /* ── SKILLS ── */
+    #skills { background: var(--surface); }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+    }
+
+    .skill-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 32px;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .skill-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s;
+    }
+
+    .skill-card:hover::before { transform: scaleX(1); }
+    .skill-card:hover {
+      border-color: rgba(0,212,170,0.3);
+      transform: translateY(-4px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    }
+
+    .skill-card h3 {
+      font-size: 13px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 16px;
+    }
+
+    .skill-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tag {
+      background: rgba(0,212,170,0.08);
+      border: 1px solid rgba(0,212,170,0.15);
+      color: var(--text);
+      font-size: 12px;
+      padding: 5px 12px;
+      border-radius: 2px;
+    }
+
+    /* ── EXPERIENCE ── */
+    #experience { background: var(--bg); }
+
+    .timeline {
+      position: relative;
+      max-width: 860px;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0; bottom: 0;
+      width: 1px;
+      background: linear-gradient(to bottom, var(--accent), var(--accent2), transparent);
+    }
+
+    .timeline-item {
+      padding-left: 40px;
+      margin-bottom: 52px;
+      position: relative;
+    }
+
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -5px;
+      top: 6px;
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 12px rgba(0,212,170,0.5);
+    }
+
+    .exp-meta {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 6px;
+    }
+
+    .exp-company {
+      font-size: 13px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    .exp-date {
+      font-size: 12px;
+      color: var(--muted);
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 3px 10px;
+      border-radius: 2px;
+    }
+
+    .exp-role {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      color: var(--white);
+      margin-bottom: 12px;
+    }
+
+    .exp-bullets {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .exp-bullets li {
+      font-size: 14px;
+      color: var(--muted);
+      padding-left: 18px;
+      position: relative;
+      line-height: 1.6;
+    }
+
+    .exp-bullets li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-size: 12px;
+    }
+
+    /* ── PROJECTS ── */
+    #projects { background: var(--surface); }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 28px;
+    }
+
+    .project-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 36px;
+      transition: all 0.3s;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .project-card:hover {
+      border-color: rgba(124,106,247,0.4);
+      transform: translateY(-4px);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+    }
+
+    .project-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 48px;
+      font-weight: 900;
+      color: rgba(0,212,170,0.08);
+      line-height: 1;
+    }
+
+    .project-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      color: var(--white);
+    }
+
+    .project-stack {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .stack-tag {
+      font-size: 11px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--accent2);
+      background: rgba(124,106,247,0.08);
+      border: 1px solid rgba(124,106,247,0.2);
+      padding: 4px 10px;
+      border-radius: 2px;
+    }
+
+    .project-desc {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    /* ── EDUCATION ── */
+    #education { background: var(--bg); }
+
+    .edu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+    }
+
+    .edu-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 32px;
+      transition: all 0.3s;
+    }
+
+    .edu-card:hover {
+      border-color: rgba(0,212,170,0.3);
+      transform: translateY(-3px);
+    }
+
+    .edu-degree {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+      color: var(--white);
+      margin-bottom: 8px;
+    }
+
+    .edu-school {
+      font-size: 13px;
+      color: var(--accent);
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+    }
+
+    .edu-year { font-size: 13px; color: var(--muted); }
+    .edu-grade {
+      margin-top: 14px;
+      display: inline-block;
+      font-size: 12px;
+      color: var(--accent);
+      background: rgba(0,212,170,0.08);
+      border: 1px solid rgba(0,212,170,0.2);
+      padding: 4px 12px;
+      border-radius: 2px;
+    }
+
+    /* ── CERTS ── */
+    #certifications { background: var(--surface); }
+
+    .certs-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 16px;
+    }
+
+    .cert-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 20px 24px;
+      transition: all 0.3s;
+    }
+
+    .cert-item:hover {
+      border-color: rgba(0,212,170,0.3);
+      transform: translateX(6px);
+    }
+
+    .cert-dot {
+      width: 8px;
+      height: 8px;
+      min-width: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 8px rgba(0,212,170,0.5);
+    }
+
+    .cert-text { font-size: 14px; color: var(--text); }
+
+    /* ── CONTACT ── */
+    #contact { background: var(--bg); text-align: center; }
+
+    .contact-inner {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .contact-email {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(20px, 3vw, 28px);
+      color: var(--white);
+      margin: 20px 0 40px;
+    }
+
+    .contact-links {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .contact-link {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border: 1px solid var(--border);
+      color: var(--text);
+      text-decoration: none;
+      padding: 14px 28px;
+      border-radius: 2px;
+      font-size: 13px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      transition: all 0.3s;
+    }
+
+    .contact-link:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(0,212,170,0.15);
+    }
+
+    .contact-link svg { width: 16px; height: 16px; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      text-align: center;
+      padding: 28px;
+      font-size: 13px;
+      color: var(--muted);
+      position: relative;
+      z-index: 1;
+    }
+
+    footer span { color: var(--accent); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── SCROLLBAR ── */
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav { padding: 16px 24px; }
+      .nav-links { gap: 20px; }
+      section { padding: 80px 24px; }
+      #hero { padding: 120px 24px 60px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo">JR</div>
+    <ul class="nav-links">
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#education">Education</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-content">
+      <div class="hero-tag">Available for Opportunities</div>
+      <h1 class="hero-name">Javeria<br/><span>Rahim</span></h1>
+      <p class="hero-roles">
+        <span>Front-End Developer</span> &nbsp;·&nbsp;
+        <span>Cybersecurity Analyst</span> &nbsp;·&nbsp;
+        <span>Generative AI Developer</span>
+      </p>
+      <p class="hero-bio">
+        Results-driven Computer Science student at Fatima Jinnah Women University with demonstrated experience across front-end development, cybersecurity analysis, data science, and generative AI — delivering scalable, real-world applications from award-winning LMS platforms to real-time DDoS detection systems.
+      </p>
+      <div class="hero-actions">
+        <a href="#contact" class="btn-primary">Get In Touch</a>
+        <a href="#projects" class="btn-outline">View Projects</a>
+      </div>
+    </div>
+    <div class="hero-glow"></div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <div class="section-label">What I Work With</div>
+    <h2 class="section-title">Technical <span>Skills</span></h2>
+    <div class="skills-grid">
+      <div class="skill-card reveal">
+        <h3>Languages & Web</h3>
+        <div class="skill-tags">
+          <span class="tag">HTML5</span><span class="tag">CSS3</span>
+          <span class="tag">JavaScript ES6+</span><span class="tag">Python</span>
+          <span class="tag">C/C++</span><span class="tag">SQL</span>
+        </div>
+      </div>
+      <div class="skill-card reveal">
+        <h3>Frameworks & Tools</h3>
+        <div class="skill-tags">
+          <span class="tag">React.js</span><span class="tag">Node.js</span>
+          <span class="tag">Streamlit</span><span class="tag">Git/GitHub</span>
+          <span class="tag">VS Code</span>
+        </div>
+      </div>
+      <div class="skill-card reveal">
+        <h3>Data & AI</h3>
+        <div class="skill-tags">
+          <span class="tag">Apache Kafka</span><span class="tag">Pandas</span>
+          <span class="tag">NumPy</span><span class="tag">scikit-learn</span>
+          <span class="tag">Tableau</span>
+        </div>
+      </div>
+      <div class="skill-card reveal">
+        <h3>Cybersecurity</h3>
+        <div class="skill-tags">
+          <span class="tag">Vulnerability Analysis</span>
+          <span class="tag">OWASP</span><span class="tag">Log Analysis</span>
+          <span class="tag">Network Security</span>
+        </div>
+      </div>
+      <div class="skill-card reveal">
+        <h3>Infrastructure</h3>
+        <div class="skill-tags">
+          <span class="tag">Linux Admin</span><span class="tag">DNS Bind9</span>
+          <span class="tag">DHCP</span><span class="tag">FTP vsftpd</span>
+          <span class="tag">VirtualBox</span>
+        </div>
+      </div>
+      <div class="skill-card reveal">
+        <h3>Soft Skills</h3>
+        <div class="skill-tags">
+          <span class="tag">Leadership</span><span class="tag">Critical Thinking</span>
+          <span class="tag">Project Management</span><span class="tag">Teamwork</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section id="experience">
+    <div class="section-label">Career Journey</div>
+    <h2 class="section-title">Work <span>Experience</span></h2>
+    <div class="timeline">
+
+      <div class="timeline-item reveal">
+        <div class="exp-meta">
+          <span class="exp-company">Arch Technology</span>
+          <span class="exp-date">Mar 2026 – Jun 2026</span>
+        </div>
+        <div class="exp-role">Generative AI Developer Intern</div>
+        <ul class="exp-bullets">
+          <li>Designed and fine-tuned generative AI models for production-level applications using Python and LLM frameworks.</li>
+          <li>Applied prompt engineering techniques to optimize model outputs for client-specific use cases.</li>
+          <li>Collaborated with engineering team to integrate AI capabilities into existing software pipelines.</li>
+        </ul>
+      </div>
+
+      <div class="timeline-item reveal">
+        <div class="exp-meta">
+          <span class="exp-company">Hex Softwares</span>
+          <span class="exp-date">Apr 2026 – May 2026</span>
+        </div>
+        <div class="exp-role">Data Science Intern</div>
+        <ul class="exp-bullets">
+          <li>Analyzed large-scale datasets to extract actionable insights supporting data-driven business decisions.</li>
+          <li>Built and evaluated predictive machine learning models, improving forecast accuracy.</li>
+          <li>Produced visual reports and dashboards to communicate findings to non-technical stakeholders.</li>
+        </ul>
+      </div>
+
+      <div class="timeline-item reveal">
+        <div class="exp-meta">
+          <span class="exp-company">Decodelabs</span>
+          <span class="exp-date">Apr 2026 – May 2026</span>
+        </div>
+        <div class="exp-role">Data Analyst Intern</div>
+        <ul class="exp-bullets">
+          <li>Cleaned, transformed, and analyzed structured datasets to uncover trends and performance patterns.</li>
+          <li>Designed interactive analytics dashboards using visualization tools for weekly reporting.</li>
+          <li>Automated repetitive reporting workflows for the analytics team.</li>
+        </ul>
+      </div>
+
+      <div class="timeline-item reveal">
+        <div class="exp-meta">
+          <span class="exp-company">Developers Hub Corporation</span>
+          <span class="exp-date">Jan 2026 – Feb 2026</span>
+        </div>
+        <div class="exp-role">Front-End Developer & Cybersecurity Analyst</div>
+        <ul class="exp-bullets">
+          <li>Developed responsive, cross-browser-compatible web interfaces using HTML5, CSS3, and JavaScript.</li>
+          <li>Performed vulnerability analysis and monitored systems for real-time security threats.</li>
+          <li>Implemented OWASP security best practices to safeguard application data and network infrastructure.</li>
+        </ul>
+      </div>
+
+      <div class="timeline-item reveal">
+        <div class="exp-meta">
+          <span class="exp-company">CodeAlpha</span>
+          <span class="exp-date">Dec 2025 – Jan 2026</span>
+        </div>
+        <div class="exp-role">Front-End Developer Intern</div>
+        <ul class="exp-bullets">
+          <li>Built and optimized responsive UI components using HTML, CSS, and JavaScript.</li>
+          <li>Improved existing user interfaces for enhanced performance and user experience.</li>
+          <li>Utilized modern front-end frameworks and Git for version control and team collaboration.</li>
+        </ul>
+      </div>
+
+      <div class="timeline-item reveal">
+        <div class="exp-meta">
+          <span class="exp-company">Digital Empower Network</span>
+          <span class="exp-date">Oct 2025 – Jan 2026</span>
+        </div>
+        <div class="exp-role">Web Developer Intern</div>
+        <ul class="exp-bullets">
+          <li>Led development of a 5th-semester LMS platform for streamlining entry test preparation.</li>
+          <li>Delivered a scalable, real-world application recognized with an appreciation certificate.</li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects">
+    <div class="section-label">What I've Built</div>
+    <h2 class="section-title">Featured <span>Projects</span></h2>
+    <div class="projects-grid">
+
+      <div class="project-card reveal">
+        <div class="project-num">01</div>
+        <div class="project-name">DDoS Attack Detection System</div>
+        <div class="project-stack">
+          <span class="stack-tag">Apache Kafka</span>
+          <span class="stack-tag">Python</span>
+          <span class="stack-tag">Streamlit</span>
+        </div>
+        <p class="project-desc">Engineered a real-time DDoS attack detection pipeline leveraging Apache Kafka for high-throughput network traffic ingestion. Built an interactive Streamlit dashboard providing live threat monitoring and alert visualization.</p>
+      </div>
+
+      <div class="project-card reveal">
+        <div class="project-num">02</div>
+        <div class="project-name">LMS for Horizon Plus</div>
+        <div class="project-stack">
+          <span class="stack-tag">HTML</span>
+          <span class="stack-tag">CSS</span>
+          <span class="stack-tag">JavaScript</span>
+          <span class="stack-tag">DBMS</span>
+        </div>
+        <p class="project-desc">Built a comprehensive Learning Management System for entry test preparation with multi-role access control. Received an appreciation award from Digital Empower Network for outstanding design and functionality.</p>
+      </div>
+
+      <div class="project-card reveal">
+        <div class="project-num">03</div>
+        <div class="project-name">Language Translator in AI</div>
+        <div class="project-stack">
+          <span class="stack-tag">Python</span>
+          <span class="stack-tag">NLP</span>
+        </div>
+        <p class="project-desc">Developed an AI-powered multilingual language translation tool leveraging natural language processing techniques for accurate cross-language communication.</p>
+      </div>
+
+      <div class="project-card reveal">
+        <div class="project-num">04</div>
+        <div class="project-name">Enterprise Server Lab</div>
+        <div class="project-stack">
+          <span class="stack-tag">Ubuntu</span>
+          <span class="stack-tag">VirtualBox</span>
+          <span class="stack-tag">Apache</span>
+          <span class="stack-tag">Bind9</span>
+        </div>
+        <p class="project-desc">Configured a multi-service virtualized network environment with DNS, DHCP, FTP, and proxy services — complete with full security hardening and comprehensive technical documentation.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- EDUCATION -->
+  <section id="education">
+    <div class="section-label">Academic Background</div>
+    <h2 class="section-title">Education</h2>
+    <div class="edu-grid">
+      <div class="edu-card reveal">
+        <div class="edu-degree">B.Sc. Computer Science</div>
+        <div class="edu-school">Fatima Jinnah Women University, Rawalpindi</div>
+        <div class="edu-year">Sep 2023 – Sep 2027</div>
+        <span class="edu-grade">GPA: 3.03 / 4.0</span>
+      </div>
+      <div class="edu-card reveal">
+        <div class="edu-degree">Intermediate — ICS</div>
+        <div class="edu-school">Askaria School and Colleges</div>
+        <div class="edu-year">2021 – 2023</div>
+        <span class="edu-grade">Grade: A</span>
+      </div>
+      <div class="edu-card reveal">
+        <div class="edu-degree">Matriculation (Science)</div>
+        <div class="edu-school">FG School MH Road, Rawalpindi</div>
+        <div class="edu-year">2019 – 2021</div>
+        <span class="edu-grade">Grade: A+</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- CERTIFICATIONS -->
+  <section id="certifications">
+    <div class="section-label">Credentials</div>
+    <h2 class="section-title">Certifications & <span>Awards</span></h2>
+    <div class="certs-list">
+      <div class="cert-item reveal"><div class="cert-dot"></div><span class="cert-text">CISCO IT Essentials — Cisco Networking Academy</span></div>
+      <div class="cert-item reveal"><div class="cert-dot"></div><span class="cert-text">CISCO Ethical Hacking Essentials — Cisco Networking Academy</span></div>
+      <div class="cert-item reveal"><div class="cert-dot"></div><span class="cert-text">CISCO Networking Security — Cisco Networking Academy</span></div>
+      <div class="cert-item reveal"><div class="cert-dot"></div><span class="cert-text">Kaggle Data Visualization — Kaggle</span></div>
+      <div class="cert-item reveal"><div class="cert-dot"></div><span class="cert-text">Cybersecurity Bootcamp: SQL Injection Defense — DevTown / Google Dev Group (2025)</span></div>
+      <div class="cert-item reveal"><div class="cert-dot"></div><span class="cert-text">🏆 LMS Design Appreciation Award — Digital Empower Network</span></div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="contact-inner">
+      <div class="section-label">Let's Connect</div>
+      <h2 class="section-title">Get In <span>Touch</span></h2>
+      <div class="contact-email">javeriarahim868@gmail.com</div>
+      <div class="contact-links">
+        <a href="mailto:javeriarahim868@gmail.com" class="contact-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          Email
+        </a>
+        <a href="https://www.linkedin.com/in/javeria-rahim-06a9ab363" target="_blank" class="contact-link">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+          LinkedIn
+        </a>
+        <a href="https://github.com/javeriarahim" target="_blank" class="contact-link">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+          GitHub
+        </a>
+        <a href="tel:+923336131284" class="contact-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2.18h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          Call
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    Designed & Built by <span>Javeria Rahim</span> &nbsp;·&nbsp; Rawalpindi, Pakistan &nbsp;·&nbsp; 2026
+  </footer>
+
+  <script>
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('visible'), i * 80);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    reveals.forEach(el => observer.observe(el));
+
+    // Active nav highlight
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-links a');
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(sec => {
+        if (window.scrollY >= sec.offsetTop - 120) current = sec.getAttribute('id');
+      });
+      navLinks.forEach(link => {
+        link.style.color = link.getAttribute('href') === `#${current}` ? 'var(--accent)' : '';
+      });
+    });
+  </script>
+</body>
+</html>
