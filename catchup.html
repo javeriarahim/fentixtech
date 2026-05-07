@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Catchub – Watch. Communicate. Create.</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --red: #e53935;
+      --dark: #1a1a1a;
+      --light: #f5f5f7;
+      --mid: #888;
+      --white: #ffffff;
+      --section-bg-alt: #efefef;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--light);
+      color: var(--dark);
+      overflow-x: hidden;
+    }
+
+    /* ─── HERO ─── */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      padding: 80px 8% 60px;
+      gap: 60px;
+      background: linear-gradient(135deg, #f5f5f7 60%, #e8e8ec 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      width: 600px; height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(229,57,53,.07) 0%, transparent 70%);
+      top: -100px; right: -100px;
+      pointer-events: none;
+    }
+
+    .hero-left { animation: fadeUp .8s ease both; }
+    .hero-left .logo {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3rem, 6vw, 5rem);
+      color: var(--red);
+      font-style: italic;
+      line-height: 1;
+      margin-bottom: 20px;
+    }
+    .hero-left .tagline {
+      font-size: clamp(.85rem, 1.5vw, 1rem);
+      font-weight: 600;
+      letter-spacing: .35em;
+      text-transform: uppercase;
+      color: var(--dark);
+      margin-bottom: 10px;
+    }
+    .hero-left .sub {
+      font-size: 1rem;
+      color: var(--mid);
+      margin-bottom: 40px;
+    }
+
+    .store-btns { display: flex; gap: 14px; flex-wrap: wrap; }
+    .store-btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 12px 22px;
+      border-radius: 10px;
+      font-size: .85rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: transform .2s, box-shadow .2s;
+      cursor: pointer;
+    }
+    .store-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,.15); }
+    .store-btn.android { background: #78a52e; color: #fff; }
+    .store-btn.ios     { background: var(--dark); color: #fff; }
+    .store-btn svg { width: 22px; height: 22px; fill: currentColor; }
+    .store-btn .btn-text { display: flex; flex-direction: column; }
+    .store-btn .btn-text span:first-child { font-size: .65rem; opacity: .8; }
+    .store-btn .btn-text span:last-child  { font-size: .9rem; font-weight: 600; }
+
+    .hero-right {
+      display: flex; justify-content: center; align-items: center;
+      animation: fadeUp .9s .2s ease both;
+    }
+    .phone-mockup-hero {
+      width: 100%; max-width: 480px;
+      border-radius: 20px;
+      box-shadow: 0 30px 80px rgba(0,0,0,.18);
+      background: #fff;
+      overflow: hidden;
+    }
+    .phone-mockup-hero img { width: 100%; display: block; }
+
+    /* Fake app screenshot inside hero */
+    .app-screen {
+      background: #fff;
+      border-radius: 18px;
+      box-shadow: 0 20px 60px rgba(0,0,0,.12);
+      overflow: hidden;
+      max-width: 480px;
+      width: 100%;
+    }
+    .app-screen-header {
+      background: var(--dark);
+      color: #fff;
+      padding: 14px 18px;
+      font-size: .75rem;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .app-screen-body {
+      padding: 0;
+    }
+    .app-banner {
+      background: linear-gradient(135deg, #1a1a1a, #333);
+      color: #fff;
+      padding: 24px 20px;
+      font-size: 1.4rem;
+      font-weight: 700;
+      letter-spacing: .05em;
+    }
+    .app-banner span { color: var(--red); }
+    .app-stats {
+      display: flex; gap: 30px;
+      padding: 16px 20px;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    .app-stats div { text-align: center; }
+    .app-stats .num { font-size: 1.4rem; font-weight: 700; }
+    .app-stats .lbl { font-size: .7rem; color: var(--mid); }
+    .app-channels { padding: 12px 20px; }
+    .app-channels-title { font-size: .7rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--mid); margin-bottom: 10px; }
+    .channel-row { display: flex; gap: 12px; flex-wrap: wrap; }
+    .channel-chip {
+      display: flex; align-items: center; gap: 6px;
+      background: var(--light); border-radius: 20px;
+      padding: 6px 12px; font-size: .72rem; font-weight: 500;
+    }
+    .channel-chip .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--red); }
+
+    /* ─── SECTIONS ─── */
+    section { padding: 100px 8%; }
+
+    .feature-section {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      gap: 80px;
+    }
+    .feature-section.reverse { direction: rtl; }
+    .feature-section.reverse > * { direction: ltr; }
+
+    .feature-text .label {
+      font-size: .7rem;
+      font-weight: 700;
+      letter-spacing: .4em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 14px;
+    }
+    .feature-text h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      line-height: 1.15;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+    .feature-text p {
+      font-size: 1.05rem;
+      line-height: 1.8;
+      color: #555;
+      max-width: 400px;
+    }
+
+    .phones-wrap {
+      display: flex;
+      gap: -20px;
+      justify-content: center;
+      position: relative;
+    }
+    .phone {
+      background: #fff;
+      border-radius: 32px;
+      box-shadow: 0 20px 60px rgba(0,0,0,.13);
+      overflow: hidden;
+      width: 160px;
+      height: 320px;
+      flex-shrink: 0;
+      border: 6px solid #fff;
+    }
+    .phone:nth-child(2) {
+      transform: translateY(-20px) rotate(-4deg);
+      z-index: 2;
+    }
+    .phone:nth-child(1) {
+      transform: rotate(4deg) translateX(15px);
+    }
+    .phone:nth-child(3) {
+      transform: rotate(-2deg) translateX(-15px);
+    }
+    .phone-inner {
+      width: 100%; height: 100%;
+      background: linear-gradient(160deg, #1a1a1a 40%, #2d2d2d);
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 14px;
+      position: relative;
+    }
+    .phone-inner::before {
+      content: 'CHANNELS';
+      position: absolute;
+      top: 14px; left: 14px;
+      font-size: .55rem; letter-spacing: .2em;
+      font-weight: 700; color: rgba(255,255,255,.4);
+    }
+    .phone-inner .vid-thumb {
+      width: 100%; height: 100%;
+      background: linear-gradient(180deg, transparent 40%, rgba(0,0,0,.6) 100%);
+      position: absolute; inset: 0;
+    }
+    .phone-bar {
+      background: rgba(255,255,255,.12);
+      border-radius: 6px;
+      padding: 6px 8px;
+      color: #fff;
+      font-size: .6rem;
+      backdrop-filter: blur(4px);
+      position: relative; z-index: 2;
+    }
+
+    /* Messages section phones */
+    .msg-phones { display: flex; gap: 30px; justify-content: center; }
+    .msg-phone {
+      background: #fff;
+      border-radius: 28px;
+      box-shadow: 0 18px 50px rgba(0,0,0,.12);
+      overflow: hidden;
+      width: 180px;
+      border: 5px solid #fff;
+    }
+    .msg-phone-header {
+      background: var(--light);
+      padding: 10px 12px;
+      font-size: .65rem; font-weight: 600;
+      border-bottom: 1px solid #e0e0e0;
+      display: flex; justify-content: space-between;
+    }
+    .msg-list { padding: 8px; }
+    .msg-item {
+      display: flex; align-items: center; gap: 8px;
+      padding: 6px 4px;
+      border-bottom: 1px solid #f5f5f5;
+    }
+    .msg-avatar {
+      width: 28px; height: 28px; border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .msg-info { flex: 1; min-width: 0; }
+    .msg-name { font-size: .6rem; font-weight: 600; }
+    .msg-preview { font-size: .55rem; color: var(--mid); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .msg-badge {
+      width: 16px; height: 16px; border-radius: 50%;
+      background: var(--red); color: #fff;
+      font-size: .5rem; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    /* Avatar colors */
+    .av1 { background: #e53935; }
+    .av2 { background: #1e88e5; }
+    .av3 { background: #43a047; }
+    .av4 { background: #fb8c00; }
+    .av5 { background: #8e24aa; }
+    .av6 { background: #00897b; }
+
+    /* In Future section */
+    .future-section {
+      background: var(--dark);
+      color: #fff;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+    .future-icons {
+      display: flex; flex-wrap: wrap; gap: 24px;
+      margin-bottom: 30px;
+    }
+    .future-icon {
+      display: flex; flex-direction: column; align-items: center; gap: 6px;
+      font-size: .65rem; color: rgba(255,255,255,.5);
+    }
+    .future-icon .icon-circle {
+      width: 44px; height: 44px; border-radius: 50%;
+      border: 1px solid rgba(255,255,255,.2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem;
+    }
+    .future-section h2 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 3.5vw, 2.8rem); letter-spacing: .12em; text-transform: uppercase; margin-bottom: 20px; }
+    .future-section p { font-size: 1rem; line-height: 1.8; color: rgba(255,255,255,.6); max-width: 380px; }
+
+    /* Discovery phone (future) */
+    .disc-phone {
+      background: #fff;
+      border-radius: 28px;
+      overflow: hidden;
+      box-shadow: 0 30px 80px rgba(0,0,0,.4);
+      border: 5px solid rgba(255,255,255,.1);
+      max-width: 260px;
+      margin: 0 auto;
+    }
+    .disc-phone-header { background: #f5f5f7; padding: 10px 14px; font-size: .65rem; font-weight: 600; }
+    .disc-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 6px;
+      padding: 8px;
+    }
+    .disc-card {
+      border-radius: 10px;
+      overflow: hidden;
+      height: 80px;
+      display: flex; align-items: flex-end;
+      padding: 8px;
+      font-size: .6rem; font-weight: 600; color: #fff;
+      background: linear-gradient(180deg, transparent 30%, rgba(0,0,0,.6) 100%);
+      position: relative;
+    }
+    .disc-card-bg { position: absolute; inset: 0; }
+    .dc1 .disc-card-bg { background: linear-gradient(135deg,#e53935,#c62828); }
+    .dc2 .disc-card-bg { background: linear-gradient(135deg,#1e88e5,#1565c0); }
+    .dc3 .disc-card-bg { background: linear-gradient(135deg,#43a047,#2e7d32); }
+    .dc4 .disc-card-bg { background: linear-gradient(135deg,#fb8c00,#e65100); }
+    .disc-card span { position: relative; z-index: 2; }
+
+    /* ─── FOOTER CTA ─── */
+    .footer-cta {
+      text-align: center;
+      padding: 80px 8%;
+      background: var(--light);
+    }
+    .footer-cta p { font-size: 1rem; color: var(--mid); margin-bottom: 30px; }
+    .footer-cta .store-btns { justify-content: center; }
+    .contact-line {
+      margin-top: 30px;
+      font-size: .9rem;
+      color: var(--mid);
+    }
+    .contact-line a { color: var(--red); font-weight: 600; text-decoration: none; }
+    .contact-line a:hover { text-decoration: underline; }
+
+    .footer-brand {
+      padding: 30px 8%;
+      text-align: center;
+      background: #ececec;
+      font-size: .75rem;
+      color: var(--mid);
+      letter-spacing: .1em;
+    }
+    .footer-brand strong { color: var(--dark); }
+
+    /* ─── ANIMATIONS ─── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 860px) {
+      .hero, .feature-section, .future-section { grid-template-columns: 1fr; }
+      .feature-section.reverse { direction: ltr; }
+      .hero { padding: 60px 6% 40px; }
+      .phones-wrap .phone:nth-child(3) { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ═══ HERO ═══ -->
+  <section class="hero">
+    <div class="hero-left">
+      <div class="logo">Catchub</div>
+      <div class="tagline">Watch. Communicate. Create.</div>
+      <p class="sub">Everything you need to socialise</p>
+      <div class="store-btns">
+        <a href="#" class="store-btn android">
+          <svg viewBox="0 0 24 24"><path d="M17.523 15.341l-4.786-2.764a.5.5 0 0 1 0-.866l4.786-2.764a1 1 0 0 1 1.5.866v5.661a1 1 0 0 1-1.5.867zm-13.046.659V8a1 1 0 0 1 1.5-.866l9.952 5.744a1 1 0 0 1 0 1.732L5.977 20.354A1 1 0 0 1 4.477 20v-4z"/></svg>
+          <div class="btn-text"><span>Available on the Android</span><span>App Store</span></div>
+        </a>
+        <a href="#" class="store-btn ios">
+          <svg viewBox="0 0 24 24"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+          <div class="btn-text"><span>Download on the</span><span>App Store</span></div>
+        </a>
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <div class="app-screen">
+        <div class="app-screen-header">
+          <span>SHANGHAI NEWS</span>
+          <span>● ● ●</span>
+        </div>
+        <div class="app-screen-body">
+          <div class="app-banner">SHANGHAI<br><span>NEWS</span></div>
+          <div class="app-stats">
+            <div><div class="num">475</div><div class="lbl">Following</div></div>
+            <div><div class="num">142</div><div class="lbl">Followers</div></div>
+          </div>
+          <div class="app-channels">
+            <div class="app-channels-title">Nearby Channels</div>
+            <div class="channel-row">
+              <div class="channel-chip"><span class="dot"></span>DJ Moltez</div>
+              <div class="channel-chip"><span class="dot"></span>Epic Games</div>
+              <div class="channel-chip"><span class="dot"></span>Movie Night</div>
+              <div class="channel-chip"><span class="dot"></span>Nike</div>
+              <div class="channel-chip"><span class="dot"></span>Marvel</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ CHANNELS ═══ -->
+  <section style="background: var(--light);">
+    <div class="feature-section reveal">
+      <div class="phones-wrap">
+        <div class="phone">
+          <div class="phone-inner">
+            <div class="vid-thumb" style="background:linear-gradient(160deg,#c62828 0%,#1a1a1a 100%);"></div>
+            <div class="phone-bar">🎵 Music Channel</div>
+          </div>
+        </div>
+        <div class="phone">
+          <div class="phone-inner" style="background: linear-gradient(160deg,#1a1a1a 0%,#333 100%);">
+            <div class="vid-thumb" style="background:linear-gradient(160deg,transparent 30%, rgba(0,0,0,.8) 100%);"></div>
+            <div class="phone-bar" style="font-size:.7rem; font-weight:700;">PEG 35 BY YOU</div>
+          </div>
+        </div>
+        <div class="phone">
+          <div class="phone-inner" style="background: linear-gradient(160deg,#1565c0 0%,#1a1a1a 100%);">
+            <div class="vid-thumb"></div>
+            <div class="phone-bar">🎬 Sports Live</div>
+          </div>
+        </div>
+      </div>
+      <div class="feature-text">
+        <div class="label">Feature 01</div>
+        <h2>Channels</h2>
+        <p>Enjoy the videos and music you love. Create your own business or entertainment channel and reach your audience.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ MESSAGES ═══ -->
+  <section style="background: var(--section-bg-alt);">
+    <div class="feature-section reverse reveal">
+      <div class="feature-text">
+        <div class="label">Feature 02</div>
+        <h2>Messages</h2>
+        <p>Communicate seamlessly. Create your own professional or social group chat and connect with everyone that matters.</p>
+      </div>
+      <div class="msg-phones">
+        <div class="msg-phone">
+          <div class="msg-phone-header"><span>Messages</span><span>Q</span></div>
+          <div class="msg-list">
+            <div class="msg-item"><div class="msg-avatar av1"></div><div class="msg-info"><div class="msg-name">John Ronaldo</div><div class="msg-preview">Hey! Are you free...</div></div><div class="msg-badge">3</div></div>
+            <div class="msg-item"><div class="msg-avatar av2"></div><div class="msg-info"><div class="msg-name">John Walton 🔴</div><div class="msg-preview">Sure, let's meet at...</div></div></div>
+            <div class="msg-item"><div class="msg-avatar av3"></div><div class="msg-info"><div class="msg-name">Katy Perry</div><div class="msg-preview">Catchub Project...</div></div><div class="msg-badge">1</div></div>
+            <div class="msg-item"><div class="msg-avatar av4"></div><div class="msg-info"><div class="msg-name">Hamm Barry</div><div class="msg-preview">I'll send you the files</div></div></div>
+            <div class="msg-item"><div class="msg-avatar av5"></div><div class="msg-info"><div class="msg-name">Prizy Billy</div><div class="msg-preview">What time is it?</div></div></div>
+            <div class="msg-item"><div class="msg-avatar av6"></div><div class="msg-info"><div class="msg-name">Alex Ronaldo</div><div class="msg-preview">See you tomorrow!</div></div></div>
+          </div>
+        </div>
+        <div class="msg-phone" style="transform:translateY(20px) rotate(3deg); box-shadow: 0 24px 60px rgba(0,0,0,.15);">
+          <div class="msg-phone-header" style="background:var(--dark); color:#fff;"><span>Group Chat</span><span>+</span></div>
+          <div class="msg-list">
+            <div class="msg-item"><div class="msg-avatar av1"></div><div class="msg-info"><div class="msg-name">Jennifer B.</div><div class="msg-preview">Great idea! Let's do it</div></div></div>
+            <div class="msg-item"><div class="msg-avatar av2"></div><div class="msg-info"><div class="msg-name">Marcus L.</div><div class="msg-preview">Agreed 👍</div></div></div>
+            <div class="msg-item"><div class="msg-avatar av3"></div><div class="msg-info"><div class="msg-name">Sarah K.</div><div class="msg-preview">What time works for...</div></div><div class="msg-badge">2</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ IN FUTURE ═══ -->
+  <section class="future-section reveal">
+    <div class="disc-phone">
+      <div class="disc-phone-header">Discover</div>
+      <div class="disc-grid">
+        <div class="disc-card dc1"><div class="disc-card-bg"></div><span>Events</span></div>
+        <div class="disc-card dc2"><div class="disc-card-bg"></div><span>Party</span></div>
+        <div class="disc-card dc3"><div class="disc-card-bg"></div><span>Metro</span></div>
+        <div class="disc-card dc4"><div class="disc-card-bg"></div><span>Jobs</span></div>
+      </div>
+      <div style="padding:8px 8px 14px; display:flex; flex-direction:column; gap:6px;">
+        <div style="background:#f9f9f9; border-radius:8px; padding:8px 10px; font-size:.6rem;">
+          <div style="font-weight:700; margin-bottom:2px;">Franch Miracle</div>
+          <div style="color:#888;">Restaurant · ⭐ 4.5 · 6.1 km</div>
+        </div>
+        <div style="background:#f9f9f9; border-radius:8px; padding:8px 10px; font-size:.6rem;">
+          <div style="font-weight:700; margin-bottom:2px;">Clement Fresh</div>
+          <div style="color:#888;">Café · ⭐ 4.2 · 0.8 km</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="feature-text" style="color:#fff;">
+      <div class="label" style="color:var(--red);">Feature 03</div>
+      <div class="future-icons">
+        <div class="future-icon"><div class="icon-circle">🎪</div><span>Events</span></div>
+        <div class="future-icon"><div class="icon-circle">🎉</div><span>Party</span></div>
+        <div class="future-icon"><div class="icon-circle">🚇</div><span>Metro</span></div>
+        <div class="future-icon"><div class="icon-circle">💼</div><span>Jobs</span></div>
+        <div class="future-icon"><div class="icon-circle">🏠</div><span>Housing</span></div>
+        <div class="future-icon"><div class="icon-circle">🍕</div><span>Food</span></div>
+      </div>
+      <h2>In Future</h2>
+      <p>Communicate seamlessly. Create your own professional or social group chat and discover the world around you.</p>
+    </div>
+  </section>
+
+  <!-- ═══ FOOTER CTA ═══ -->
+  <div class="footer-cta">
+    <p>For download click here:</p>
+    <div class="store-btns">
+      <a href="#" class="store-btn android">
+        <svg viewBox="0 0 24 24" style="width:22px;height:22px;fill:#fff"><path d="M17.523 15.341l-4.786-2.764a.5.5 0 0 1 0-.866l4.786-2.764a1 1 0 0 1 1.5.866v5.661a1 1 0 0 1-1.5.867zm-13.046.659V8a1 1 0 0 1 1.5-.866l9.952 5.744a1 1 0 0 1 0 1.732L5.977 20.354A1 1 0 0 1 4.477 20v-4z"/></svg>
+        <div class="btn-text"><span>Available on the Android</span><span>App Store</span></div>
+      </a>
+      <a href="#" class="store-btn ios">
+        <svg viewBox="0 0 24 24" style="width:22px;height:22px;fill:#fff"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+        <div class="btn-text"><span>Download on the</span><span>App Store</span></div>
+      </a>
+    </div>
+    <p class="contact-line">Any questions? Feel free to <a href="#">CONTACT US</a></p>
+  </div>
+
+  <div class="footer-brand">
+    <strong>PERATUDE</strong> · All rights reserved
+  </div>
+
+  <script>
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.15 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
