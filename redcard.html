@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Red Card 2018 – Submission</title>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --red:   #8B1A1A;
+      --dark:  #1a1a1a;
+      --white: #ffffff;
+    }
+
+    body {
+      font-family: 'Open Sans', sans-serif;
+      background: #f0f0f0;
+      color: var(--dark);
+      min-height: 100vh;
+    }
+
+    /* ── NAV ── */
+    .navbar {
+      display: flex;
+      align-items: center;
+      padding: 12px 24px;
+      background: var(--white);
+      border-bottom: 1px solid #ddd;
+    }
+    .navbar img { height: 54px; }
+
+    /* ── SUBMISSION CARD ── */
+    .page-wrap {
+      display: flex;
+      justify-content: center;
+      padding: 0;
+    }
+
+    .submission-card {
+      width: 100%;
+      max-width: 700px;
+      background: var(--red);
+      padding: 40px 36px 50px;
+    }
+
+    /* ── TWO-COLUMN LAYOUT (Flexbox) ── */
+    .card-body {
+      display: flex;
+      gap: 40px;
+      align-items: flex-start;
+    }
+
+    /* LEFT COLUMN */
+    .left-col {
+      flex: 0 0 220px;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .left-col h1 {
+      font-family: 'Anton', sans-serif;
+      font-size: 3.2rem;
+      color: var(--white);
+      line-height: 1;
+      margin-bottom: 16px;
+      letter-spacing: .02em;
+    }
+    .left-col p {
+      font-size: .78rem;
+      color: rgba(255,255,255,.82);
+      line-height: 1.65;
+      margin-bottom: 22px;
+    }
+    .left-col .deadline {
+      font-size: .82rem;
+      font-weight: 800;
+      color: var(--white);
+      line-height: 1.4;
+    }
+
+    /* RIGHT COLUMN */
+    .right-col {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    /* Text inputs */
+    .form-input {
+      width: 100%;
+      background: transparent;
+      border: 1px solid rgba(255,255,255,.55);
+      border-radius: 2px;
+      padding: 9px 12px;
+      font-size: .8rem;
+      color: var(--white);
+      font-family: 'Open Sans', sans-serif;
+      outline: none;
+      transition: border-color .2s;
+    }
+    .form-input::placeholder { color: rgba(255,255,255,.65); }
+    .form-input:focus { border-color: var(--white); }
+
+    /* Award section */
+    .which-award {
+      margin-top: 6px;
+    }
+    .which-award .wa-label {
+      font-size: .85rem;
+      font-weight: 800;
+      color: var(--white);
+      margin-bottom: 2px;
+    }
+    .which-award .wa-hint {
+      font-size: .67rem;
+      color: rgba(255,255,255,.7);
+      margin-bottom: 10px;
+    }
+
+    /* Award item (checkbox + label + icon + textarea) */
+    .award-item {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+    .award-item-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .award-item-header input[type="checkbox"] {
+      width: 14px; height: 14px;
+      accent-color: var(--white);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .award-item-header label {
+      font-size: .78rem;
+      color: var(--white);
+      cursor: pointer;
+      flex: 1;
+    }
+    .award-item-header .award-icon {
+      width: 18px; height: 18px;
+      opacity: .7;
+    }
+
+    .award-textarea {
+      width: 100%;
+      background: transparent;
+      border: 1px solid rgba(255,255,255,.45);
+      border-radius: 2px;
+      padding: 8px 10px;
+      font-size: .72rem;
+      color: rgba(255,255,255,.85);
+      font-family: 'Open Sans', sans-serif;
+      resize: vertical;
+      min-height: 60px;
+      outline: none;
+    }
+    .award-textarea::placeholder { color: rgba(255,255,255,.55); }
+    .award-textarea:focus { border-color: var(--white); }
+
+    /* Submit button */
+    .submit-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      padding: 14px 20px;
+      background: var(--white);
+      border: none;
+      border-radius: 2px;
+      font-family: 'Open Sans', sans-serif;
+      font-size: .9rem;
+      font-weight: 700;
+      color: var(--dark);
+      cursor: pointer;
+      margin-top: 8px;
+      letter-spacing: .04em;
+      transition: background .2s, color .2s;
+    }
+    .submit-btn:hover { background: #f0f0f0; }
+    .submit-btn .check-icon {
+      font-size: 1rem;
+      color: #444;
+    }
+
+    /* ── DIAGONAL CORNER (bottom-right white triangle) ── */
+    .card-corner-wrap {
+      position: relative;
+      overflow: hidden;
+    }
+    .card-corner-wrap::after {
+      content: '';
+      position: absolute;
+      bottom: 0; right: 0;
+      width: 80px; height: 80px;
+      background: #f0f0f0;
+      clip-path: polygon(100% 0, 100% 100%, 0 100%);
+    }
+
+    @media (max-width: 600px) {
+      .card-body { flex-direction: column; }
+      .left-col { flex: 0 0 auto; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="navbar">
+    <img src="C:\Users\HP\Desktop\Fentix tech\redCard (1)\redCard\logo.png" alt="Red Card Logo"/>
+  </nav>
+
+  <!-- SUBMISSION PAGE -->
+  <div class="page-wrap">
+    <div class="submission-card card-corner-wrap">
+      <div class="card-body">
+
+        <!-- LEFT -->
+        <div class="left-col">
+          <h1>Submission</h1>
+          <p>
+            All details of submissions will be kept strictly private and
+            confidential by Mailman and will not be used for any purpose
+            other than judging Red Card 2018 winners.
+          </p>
+          <p class="deadline">
+            Applications will close on the<br/>
+            15th December 2017
+          </p>
+        </div>
+
+        <!-- RIGHT -->
+        <div class="right-col">
+          <input class="form-input" type="text" placeholder="Name"/>
+          <input class="form-input" type="email" placeholder="Email Address"/>
+          <input class="form-input" type="text" placeholder="Organisation"/>
+
+          <div class="which-award">
+            <div class="wa-label">Which Award</div>
+            <div class="wa-hint">(Please tick and provide details for all of the awards you would like to be nominated for)</div>
+
+            <!-- Award 1 -->
+            <div class="award-item">
+              <div class="award-item-header">
+                <input type="checkbox" id="a1" checked/>
+                <label for="a1">Best Livestream</label>
+                <img class="award-icon" src="C:\Users\HP\Desktop\Fentix tech\redCard (1)\redCard\icon_awards.png" alt=""/>
+              </div>
+              <textarea class="award-textarea" placeholder="Description & Results (max. 150 words)"></textarea>
+            </div>
+
+            <!-- Award 2 -->
+            <div class="award-item">
+              <div class="award-item-header">
+                <input type="checkbox" id="a2"/>
+                <label for="a2">Best Tour Campaign</label>
+                <img class="award-icon" src="C:\Users\HP\Desktop\Fentix tech\redCard (1)\redCard\icon_awards.png" alt=""/>
+              </div>
+              <textarea class="award-textarea" placeholder="Description & Results (max. 150 words)"></textarea>
+            </div>
+
+            <!-- Award 3 -->
+            <div class="award-item">
+              <div class="award-item-header">
+                <input type="checkbox" id="a3"/>
+                <label for="a3">Best Sponsor Activation</label>
+                <img class="award-icon" src="C:\Users\HP\Desktop\Fentix tech\redCard (1)\redCard\icon_awards.png" alt=""/>
+              </div>
+              <textarea class="award-textarea" placeholder="Description & Results (max. 150 words)"></textarea>
+            </div>
+
+            <!-- Award 4 -->
+            <div class="award-item">
+              <div class="award-item-header">
+                <input type="checkbox" id="a4"/>
+                <label for="a4">Best Use of Technology</label>
+                <img class="award-icon" src="C:\Users\HP\Desktop\Fentix tech\redCard (1)\redCard\icon_awards.png" alt=""/>
+              </div>
+              <textarea class="award-textarea" placeholder="Description & Results (max. 150 words)"></textarea>
+            </div>
+
+            <!-- Award 5 -->
+            <div class="award-item">
+              <div class="award-item-header">
+                <input type="checkbox" id="a5"/>
+                <label for="a5">Best Online Campaign</label>
+                <img class="award-icon" src="C:\Users\HP\Desktop\Fentix tech\redCard (1)\redCard\icon_awards.png" alt=""/>
+              </div>
+              <textarea class="award-textarea" placeholder="Description & Results (max. 150 words)"></textarea>
+            </div>
+          </div>
+
+          <button class="submit-btn">
+            <span class="check-icon">✓</span>
+            Submission Successful
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
