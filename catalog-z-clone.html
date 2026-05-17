@@ -1,0 +1,1310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Catalog Z – Photo & Video Gallery</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    /* ─── CSS Variables ─────────────────────────────── */
+    :root {
+      --bg-dark:    #0d0d0d;
+      --bg-panel:   #141414;
+      --bg-card:    #1a1a1a;
+      --sidebar-w:  260px;
+      --accent:     #e8c87a;
+      --accent2:    #c9a84c;
+      --text-main:  #e8e8e8;
+      --text-muted: #888;
+      --border:     #2a2a2a;
+      --tag-bg:     #222;
+      --radius:     6px;
+      --transition: 0.25s ease;
+    }
+
+    /* ─── Reset ─────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+    }
+    a { text-decoration: none; color: inherit; }
+    img { display: block; width: 100%; object-fit: cover; }
+    ul { list-style: none; }
+
+    /* ─── Layout: Sidebar + Main ─────────────────────── */
+    .wrapper {
+      display: flex;
+      width: 100%;
+      min-height: 100vh;
+    }
+
+    /* ─── SIDEBAR ────────────────────────────────────── */
+    .sidebar {
+      width: var(--sidebar-w);
+      min-width: var(--sidebar-w);
+      background: var(--bg-panel);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      padding: 36px 0 24px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      z-index: 100;
+    }
+
+    .sidebar-logo {
+      padding: 0 28px 32px;
+      border-bottom: 1px solid var(--border);
+    }
+    .sidebar-logo .brand {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 1px;
+    }
+    .sidebar-logo .brand span {
+      color: var(--text-main);
+      font-weight: 400;
+    }
+    .sidebar-logo p {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-top: 4px;
+    }
+
+    .sidebar-search {
+      padding: 24px 20px 0;
+    }
+    .sidebar-search form {
+      display: flex;
+      align-items: center;
+      background: var(--tag-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .sidebar-search input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      outline: none;
+      padding: 10px 14px;
+      color: var(--text-main);
+      font-size: 0.82rem;
+      font-family: 'DM Sans', sans-serif;
+    }
+    .sidebar-search input::placeholder { color: var(--text-muted); }
+    .sidebar-search button {
+      background: transparent;
+      border: none;
+      color: var(--accent);
+      padding: 0 14px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: color var(--transition);
+    }
+    .sidebar-search button:hover { color: var(--accent2); }
+
+    .sidebar-nav {
+      padding: 28px 0 0;
+      flex: 1;
+    }
+    .nav-label {
+      font-size: 0.65rem;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      padding: 0 28px 10px;
+    }
+    .sidebar-nav ul {
+      display: flex;
+      flex-direction: column;
+    }
+    .sidebar-nav ul li a {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 11px 28px;
+      font-size: 0.875rem;
+      color: #aaa;
+      transition: all var(--transition);
+      border-left: 3px solid transparent;
+      letter-spacing: 0.3px;
+    }
+    .sidebar-nav ul li a i {
+      width: 18px;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      transition: color var(--transition);
+    }
+    .sidebar-nav ul li a:hover,
+    .sidebar-nav ul li a.active {
+      color: var(--text-main);
+      background: rgba(232,200,122,0.06);
+      border-left-color: var(--accent);
+    }
+    .sidebar-nav ul li a:hover i,
+    .sidebar-nav ul li a.active i { color: var(--accent); }
+
+    .sidebar-nav .nav-section { margin-top: 24px; }
+
+    .sidebar-tags {
+      padding: 24px 20px 0;
+      border-top: 1px solid var(--border);
+    }
+    .sidebar-tags .nav-label { padding: 0 8px 12px; }
+    .tags-cloud {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      padding: 0 8px;
+    }
+    .tag {
+      font-size: 0.72rem;
+      padding: 5px 10px;
+      background: var(--tag-bg);
+      border: 1px solid var(--border);
+      border-radius: 50px;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all var(--transition);
+    }
+    .tag:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .sidebar-footer {
+      padding: 20px 20px 0;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      text-align: center;
+      border-top: 1px solid var(--border);
+      margin-top: 24px;
+    }
+
+    /* ─── MAIN CONTENT ───────────────────────────────── */
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    /* Top Bar */
+    .topbar {
+      background: var(--bg-panel);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 36px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .topbar-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text-main);
+      letter-spacing: 0.5px;
+    }
+    .topbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .topbar-actions button {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 7px 14px;
+      border-radius: var(--radius);
+      font-size: 0.78rem;
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all var(--transition);
+    }
+    .topbar-actions button:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    .topbar-actions button.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #000;
+    }
+    .filter-tabs {
+      display: flex;
+      gap: 4px;
+    }
+    .filter-tab {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 7px 16px;
+      border-radius: var(--radius);
+      font-size: 0.78rem;
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      transition: all var(--transition);
+      letter-spacing: 0.3px;
+    }
+    .filter-tab:hover { border-color: var(--accent); color: var(--accent); }
+    .filter-tab.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #000;
+      font-weight: 600;
+    }
+
+    /* Hero Banner */
+    .hero {
+      position: relative;
+      height: 420px;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .hero-bg {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #1a1208 0%, #0d0d0d 40%, #0a1520 100%);
+      position: relative;
+    }
+    .hero-bg::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 30% 50%, rgba(232,200,122,0.12) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 30%, rgba(100,180,255,0.07) 0%, transparent 50%);
+    }
+    /* Decorative grid pattern */
+    .hero-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+    .hero-content {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 0 56px;
+      z-index: 2;
+    }
+    .hero-eyebrow {
+      font-size: 0.7rem;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 14px;
+      opacity: 0.9;
+    }
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.2rem, 4vw, 3.4rem);
+      font-weight: 700;
+      line-height: 1.15;
+      color: #fff;
+      max-width: 580px;
+      margin-bottom: 18px;
+    }
+    .hero-title em {
+      font-style: italic;
+      color: var(--accent);
+    }
+    .hero-desc {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      max-width: 440px;
+      line-height: 1.7;
+      margin-bottom: 32px;
+    }
+    .hero-btns {
+      display: flex;
+      gap: 12px;
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: #000;
+      border: none;
+      padding: 12px 28px;
+      border-radius: var(--radius);
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      letter-spacing: 0.5px;
+      transition: background var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-primary:hover { background: var(--accent2); }
+    .btn-ghost {
+      background: transparent;
+      color: var(--text-main);
+      border: 1px solid #444;
+      padding: 12px 28px;
+      border-radius: var(--radius);
+      font-size: 0.85rem;
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      transition: all var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+    /* Hero floating stats */
+    .hero-stats {
+      position: absolute;
+      right: 56px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      z-index: 2;
+    }
+    .stat-card {
+      background: rgba(20,20,20,0.85);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px 24px;
+      text-align: center;
+      min-width: 110px;
+    }
+    .stat-card .num {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.7rem;
+      font-weight: 700;
+      color: var(--accent);
+      line-height: 1;
+    }
+    .stat-card .lbl {
+      font-size: 0.65rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+    /* Floating play badge */
+    .hero-play-badge {
+      position: absolute;
+      right: 56px;
+      bottom: 36px;
+      background: rgba(232,200,122,0.12);
+      border: 1px solid rgba(232,200,122,0.3);
+      border-radius: 50px;
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.78rem;
+      color: var(--accent);
+      cursor: pointer;
+      z-index: 2;
+      transition: background var(--transition);
+    }
+    .hero-play-badge:hover { background: rgba(232,200,122,0.2); }
+    .play-icon {
+      width: 32px;
+      height: 32px;
+      background: var(--accent);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #000;
+      font-size: 0.75rem;
+    }
+
+    /* Content Area */
+    .content {
+      padding: 36px;
+      flex: 1;
+    }
+
+    /* Section Header */
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+    .section-title span {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      font-weight: 400;
+      margin-left: 10px;
+      letter-spacing: 1px;
+    }
+    .see-all {
+      font-size: 0.78rem;
+      color: var(--accent);
+      letter-spacing: 0.5px;
+      transition: color var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .see-all:hover { color: var(--accent2); }
+
+    /* ─── FEATURED GRID ──────────────────────────────── */
+    .featured-grid {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 48px;
+    }
+    .featured-main {
+      flex: 1.8;
+      min-width: 0;
+    }
+    .featured-side {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      min-width: 0;
+    }
+
+    /* Cards */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition);
+    }
+    .card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(232,200,122,0.3);
+      box-shadow: 0 12px 36px rgba(0,0,0,0.5);
+    }
+    .card-thumb {
+      position: relative;
+      overflow: hidden;
+    }
+    .card-thumb img {
+      transition: transform 0.4s ease;
+    }
+    .card:hover .card-thumb img { transform: scale(1.05); }
+
+    /* Type badge */
+    .badge {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      padding: 4px 10px;
+      border-radius: 50px;
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      z-index: 3;
+    }
+    .badge-photo { background: rgba(232,200,122,0.9); color: #000; }
+    .badge-video { background: rgba(255,80,80,0.9); color: #fff; }
+    .badge-featured { background: rgba(100,180,255,0.9); color: #000; }
+
+    /* Overlay play button */
+    .play-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity var(--transition);
+      z-index: 2;
+    }
+    .card:hover .play-overlay { opacity: 1; }
+    .play-btn {
+      width: 54px;
+      height: 54px;
+      background: var(--accent);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #000;
+      font-size: 1rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    }
+    .play-btn.sm { width: 36px; height: 36px; font-size: 0.7rem; }
+
+    /* Duration label */
+    .duration {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      background: rgba(0,0,0,0.75);
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 0.68rem;
+      color: #ddd;
+      letter-spacing: 0.5px;
+    }
+
+    /* Like / save overlay */
+    .card-actions-overlay {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      opacity: 0;
+      transition: opacity var(--transition);
+      z-index: 4;
+    }
+    .card:hover .card-actions-overlay { opacity: 1; }
+    .action-btn {
+      width: 30px;
+      height: 30px;
+      background: rgba(0,0,0,0.7);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      color: #ccc;
+      transition: all var(--transition);
+    }
+    .action-btn:hover { background: var(--accent); color: #000; }
+
+    .card-body {
+      padding: 16px;
+    }
+    .card-body .meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+    .meta .dot { width: 3px; height: 3px; background: var(--text-muted); border-radius: 50%; }
+    .meta .cat-tag {
+      color: var(--accent);
+      font-weight: 500;
+    }
+    .card-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-main);
+      line-height: 1.35;
+      margin-bottom: 8px;
+      transition: color var(--transition);
+    }
+    .card:hover .card-title { color: var(--accent); }
+    .card-desc {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 14px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .card-footer-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .author-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), #b8860b);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: #000;
+      flex-shrink: 0;
+    }
+    .author-name {
+      font-size: 0.75rem;
+      color: #aaa;
+      font-weight: 500;
+    }
+    .card-stats {
+      display: flex;
+      gap: 12px;
+    }
+    .card-stats span {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .card-stats span i { font-size: 0.65rem; }
+
+    /* Featured main card */
+    .featured-main .card-thumb { height: 280px; }
+    .featured-main .card-title { font-size: 1.2rem; }
+    .featured-main .card-desc { -webkit-line-clamp: 3; }
+
+    /* Side cards */
+    .featured-side .card {
+      display: flex;
+      align-items: stretch;
+    }
+    .featured-side .card-thumb {
+      width: 120px;
+      min-width: 120px;
+      height: 90px;
+    }
+    .featured-side .card-body { padding: 12px 14px; flex: 1; }
+    .featured-side .card-title { font-size: 0.85rem; -webkit-line-clamp: 2; }
+    .featured-side .card-desc { display: none; }
+
+    /* ─── GALLERY GRID ───────────────────────────────── */
+    .gallery-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-bottom: 48px;
+    }
+    .gallery-grid .card {
+      flex: 1 1 calc(25% - 16px);
+      min-width: 200px;
+    }
+    .gallery-grid .card-thumb { height: 170px; }
+    .gallery-grid .card-title { font-size: 0.9rem; }
+
+    /* ─── WIDE ROW ───────────────────────────────────── */
+    .wide-row {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 48px;
+    }
+    .wide-row .card { flex: 1; }
+    .wide-row .card-thumb { height: 200px; }
+
+    /* ─── FOOTER ─────────────────────────────────────── */
+    footer {
+      background: var(--bg-panel);
+      border-top: 1px solid var(--border);
+      padding: 32px 36px 24px;
+    }
+    .footer-top {
+      display: flex;
+      gap: 40px;
+      margin-bottom: 28px;
+      flex-wrap: wrap;
+    }
+    .footer-col { flex: 1; min-width: 160px; }
+    .footer-col h4 {
+      font-size: 0.7rem;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 16px;
+    }
+    .footer-col ul { display: flex; flex-direction: column; gap: 8px; }
+    .footer-col ul li a {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      transition: color var(--transition);
+    }
+    .footer-col ul li a:hover { color: var(--text-main); }
+    .footer-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .social-links {
+      display: flex;
+      gap: 10px;
+    }
+    .social-links a {
+      width: 30px;
+      height: 30px;
+      background: var(--tag-bg);
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      transition: all var(--transition);
+    }
+    .social-links a:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    /* ─── Placeholder images via CSS ─────────────────── */
+    .img-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      color: rgba(255,255,255,0.15);
+      font-family: 'Playfair Display', serif;
+      letter-spacing: 2px;
+    }
+    .img-p1  { background: linear-gradient(135deg, #1e1209 0%, #3a2010 100%); }
+    .img-p2  { background: linear-gradient(135deg, #0d1e2a 0%, #103048 100%); }
+    .img-p3  { background: linear-gradient(135deg, #1a1020 0%, #2a1838 100%); }
+    .img-p4  { background: linear-gradient(135deg, #0e1e10 0%, #1a3018 100%); }
+    .img-p5  { background: linear-gradient(135deg, #201015 0%, #381828 100%); }
+    .img-p6  { background: linear-gradient(135deg, #1a1808 0%, #302c10 100%); }
+    .img-p7  { background: linear-gradient(135deg, #081820 0%, #102838 100%); }
+    .img-p8  { background: linear-gradient(135deg, #201808 0%, #382810 100%); }
+    .img-p9  { background: linear-gradient(135deg, #180820 0%, #280c38 100%); }
+    .img-p10 { background: linear-gradient(135deg, #080818 0%, #101028 100%); }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg-dark); }
+    ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #555; }
+  </style>
+</head>
+<body>
+<div class="wrapper">
+
+  <!-- ──────────────── SIDEBAR ──────────────────────── -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="brand">Catalog<span>·Z</span></div>
+      <p>Visual Archive</p>
+    </div>
+
+    <div class="sidebar-search">
+      <form>
+        <input type="text" placeholder="Search..."/>
+        <button type="submit"><i class="fa fa-search"></i></button>
+      </form>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-label">Browse</div>
+      <ul>
+        <li><a href="#" class="active"><i class="fa fa-home"></i>Home</a></li>
+        <li><a href="#"><i class="fa fa-image"></i>Photos</a></li>
+        <li><a href="#"><i class="fa fa-film"></i>Videos</a></li>
+        <li><a href="#"><i class="fa fa-fire"></i>Trending</a></li>
+        <li><a href="#"><i class="fa fa-star"></i>Featured</a></li>
+      </ul>
+
+      <div class="nav-section">
+        <div class="nav-label">Categories</div>
+        <ul>
+          <li><a href="#"><i class="fa fa-mountain"></i>Landscape</a></li>
+          <li><a href="#"><i class="fa fa-user"></i>Portrait</a></li>
+          <li><a href="#"><i class="fa fa-city"></i>Urban</a></li>
+          <li><a href="#"><i class="fa fa-leaf"></i>Nature</a></li>
+          <li><a href="#"><i class="fa fa-palette"></i>Abstract</a></li>
+          <li><a href="#"><i class="fa fa-car"></i>Automotive</a></li>
+        </ul>
+      </div>
+
+      <div class="nav-section">
+        <div class="nav-label">Account</div>
+        <ul>
+          <li><a href="#"><i class="fa fa-upload"></i>Upload</a></li>
+          <li><a href="#"><i class="fa fa-heart"></i>Favourites</a></li>
+          <li><a href="#"><i class="fa fa-history"></i>History</a></li>
+          <li><a href="#"><i class="fa fa-cog"></i>Settings</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="sidebar-tags">
+      <div class="nav-label">Popular Tags</div>
+      <div class="tags-cloud">
+        <span class="tag">4K</span>
+        <span class="tag">HDR</span>
+        <span class="tag">Aerial</span>
+        <span class="tag">B&amp;W</span>
+        <span class="tag">Macro</span>
+        <span class="tag">Street</span>
+        <span class="tag">Wildlife</span>
+        <span class="tag">Night</span>
+        <span class="tag">Travel</span>
+        <span class="tag">Film</span>
+      </div>
+    </div>
+
+    <div class="sidebar-footer">
+      <p>© 2024 Catalog Z. All rights reserved.</p>
+    </div>
+  </aside>
+
+  <!-- ──────────────── MAIN ─────────────────────────── -->
+  <div class="main">
+
+    <!-- Top Bar -->
+    <div class="topbar">
+      <div class="topbar-title">Visual Gallery</div>
+      <div class="topbar-actions">
+        <div class="filter-tabs">
+          <button class="filter-tab active">All</button>
+          <button class="filter-tab">Photos</button>
+          <button class="filter-tab">Videos</button>
+        </div>
+        <button><i class="fa fa-sort-amount-down"></i> Sort</button>
+        <button class="active"><i class="fa fa-th"></i></button>
+        <button><i class="fa fa-list"></i></button>
+      </div>
+    </div>
+
+    <!-- Hero Banner -->
+    <div class="hero">
+      <div class="hero-bg"></div>
+      <div class="hero-content">
+        <div class="hero-eyebrow">Featured Collection</div>
+        <h1 class="hero-title">Discover <em>Extraordinary</em><br/>Visual Stories</h1>
+        <p class="hero-desc">Explore thousands of curated photographs and cinematic videos from talented creators around the world.</p>
+        <div class="hero-btns">
+          <button class="btn-primary"><i class="fa fa-compass"></i> Explore Now</button>
+          <button class="btn-ghost"><i class="fa fa-play"></i> Watch Reel</button>
+        </div>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-card">
+          <div class="num">12K+</div>
+          <div class="lbl">Photos</div>
+        </div>
+        <div class="stat-card">
+          <div class="num">4.8K</div>
+          <div class="lbl">Videos</div>
+        </div>
+        <div class="stat-card">
+          <div class="num">980</div>
+          <div class="lbl">Artists</div>
+        </div>
+      </div>
+      <div class="hero-play-badge">
+        <div class="play-icon"><i class="fa fa-play"></i></div>
+        <span>Watch the latest reel</span>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content">
+
+      <!-- ── Featured Section ── -->
+      <div class="section-header">
+        <div class="section-title">Featured <span>This Week</span></div>
+        <a href="#" class="see-all">See All <i class="fa fa-arrow-right"></i></a>
+      </div>
+
+      <div class="featured-grid">
+        <!-- Big card -->
+        <div class="featured-main">
+          <div class="card">
+            <div class="card-thumb">
+              <div class="img-placeholder img-p1"><i class="fa fa-camera" style="font-size:3rem"></i></div>
+              <span class="badge badge-featured">Featured</span>
+              <div class="play-overlay"><div class="play-btn"><i class="fa fa-play"></i></div></div>
+              <div class="card-actions-overlay">
+                <div class="action-btn"><i class="fa fa-heart"></i></div>
+                <div class="action-btn"><i class="fa fa-bookmark"></i></div>
+                <div class="action-btn"><i class="fa fa-share-alt"></i></div>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="meta">
+                <span class="cat-tag">Landscape</span>
+                <span class="dot"></span>
+                <span>March 12, 2024</span>
+                <span class="dot"></span>
+                <span>4K Resolution</span>
+              </div>
+              <div class="card-title">Golden Hour Over the Mountain Range at Dusk</div>
+              <div class="card-desc">An awe-inspiring series captured during a two-week expedition through the Karakoram range, documenting the shifting light and shadow across ancient glaciers.</div>
+              <div class="card-footer-row">
+                <div class="author-row">
+                  <div class="avatar">AK</div>
+                  <span class="author-name">Ahmad Karim</span>
+                </div>
+                <div class="card-stats">
+                  <span><i class="fa fa-eye"></i> 14.2K</span>
+                  <span><i class="fa fa-heart"></i> 892</span>
+                  <span><i class="fa fa-download"></i> 340</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Side cards -->
+        <div class="featured-side">
+          <div class="card">
+            <div class="card-thumb">
+              <div class="img-placeholder img-p2"><i class="fa fa-film"></i></div>
+              <span class="badge badge-video">Video</span>
+              <div class="play-overlay"><div class="play-btn sm"><i class="fa fa-play"></i></div></div>
+              <span class="duration">3:42</span>
+            </div>
+            <div class="card-body">
+              <div class="meta"><span class="cat-tag">Urban</span><span class="dot"></span><span>Feb 28</span></div>
+              <div class="card-title">City Lights Time-Lapse – Night Drive</div>
+              <div class="card-footer-row">
+                <div class="author-row">
+                  <div class="avatar" style="background:linear-gradient(135deg,#4aa8ff,#1060aa)">SR</div>
+                  <span class="author-name">Sara Riaz</span>
+                </div>
+                <div class="card-stats"><span><i class="fa fa-eye"></i> 8.1K</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-thumb">
+              <div class="img-placeholder img-p3"><i class="fa fa-leaf"></i></div>
+              <span class="badge badge-photo">Photo</span>
+              <div class="play-overlay"><div class="play-btn sm"><i class="fa fa-expand"></i></div></div>
+            </div>
+            <div class="card-body">
+              <div class="meta"><span class="cat-tag">Nature</span><span class="dot"></span><span>Mar 5</span></div>
+              <div class="card-title">Monsoon Forest – Macro Collection</div>
+              <div class="card-footer-row">
+                <div class="author-row">
+                  <div class="avatar" style="background:linear-gradient(135deg,#80ff80,#208020)">ZH</div>
+                  <span class="author-name">Zara Hameed</span>
+                </div>
+                <div class="card-stats"><span><i class="fa fa-heart"></i> 621</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-thumb">
+              <div class="img-placeholder img-p4"><i class="fa fa-portrait"></i></div>
+              <span class="badge badge-photo">Photo</span>
+              <div class="play-overlay"><div class="play-btn sm"><i class="fa fa-expand"></i></div></div>
+            </div>
+            <div class="card-body">
+              <div class="meta"><span class="cat-tag">Portrait</span><span class="dot"></span><span>Mar 9</span></div>
+              <div class="card-title">Faces of the North – Documentary Series</div>
+              <div class="card-footer-row">
+                <div class="author-row">
+                  <div class="avatar" style="background:linear-gradient(135deg,#ff8080,#aa2020)">NM</div>
+                  <span class="author-name">Nadia Malik</span>
+                </div>
+                <div class="card-stats"><span><i class="fa fa-eye"></i> 5.4K</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Gallery Grid ── -->
+      <div class="section-header">
+        <div class="section-title">Latest Uploads <span>124 items</span></div>
+        <a href="#" class="see-all">View All <i class="fa fa-arrow-right"></i></a>
+      </div>
+
+      <div class="gallery-grid">
+        <!-- Card 1 -->
+        <div class="card">
+          <div class="card-thumb">
+            <div class="img-placeholder img-p5"><i class="fa fa-car" style="font-size:2rem"></i></div>
+            <span class="badge badge-photo">Photo</span>
+            <div class="play-overlay"><div class="play-btn sm"><i class="fa fa-expand"></i></div></div>
+            <div class="card-actions-overlay">
+              <div class="action-btn"><i class="fa fa-heart"></i></div>
+              <div class="action-btn"><i class="fa fa-bookmark"></i></div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="meta"><span class="cat-tag">Automotive</span></div>
+            <div class="card-title">Desert Rally – Motion Blur</div>
+            <div class="card-footer-row">
+              <div class="author-row">
+                <div class="avatar" style="background:linear-gradient(135deg,#ffa04a,#c06010)">BK</div>
+                <span class="author-name">Bilal Khan</span>
+              </div>
+              <div class="card-stats"><span><i class="fa fa-heart"></i> 441</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="card">
+          <div class="card-thumb">
+            <div class="img-placeholder img-p6"><i class="fa fa-film" style="font-size:2rem"></i></div>
+            <span class="badge badge-video">Video</span>
+            <div class="play-overlay"><div class="play-btn sm"><i class="fa fa-play"></i></div></div>
+            <span class="duration">7:18</span>
+          </div>
+          <div class="card-body">
+            <div class="meta"><span class="cat-tag">Landscape</span></div>
+            <div class="card-title">River Delta – Aerial Footage 4K</div>
+            <div class="card-footer-row">
+              <div class="author-row">
+                <div class="avatar" style="background:linear-gradient(135deg,#80ffee,#108878)">FA</div>
+                <span class="author-name">Farhan Amir</span>
+              </div>
+              <div class="card-stats"><span><i class="fa fa-eye"></i> 9.7K</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="card">
+          <div class="card-thumb">
+            <div class="img-placeholder img-p7"><i class="fa fa-city" style="font-size:2rem"></i></div>
+            <span class="badge badge-photo">Photo</span>
+            <div class="play-overlay"><div class="play-btn sm"><i class="fa fa-expand"></i></div></div>
+          </div>
+          <div class="card-body">
+            <div class="meta"><span class="cat-tag">Urban</span></div>
+            <div class="card-title">Concrete Jungle – Architecture Series</div>
+            <div class="card-footer-row">
+              <div class="author-row">
+                <div class="avatar" style="background:linear-gradient(135deg,#c0c0ff,#4040a0)">HA</div>
+                <span class="author-name">Hira Arif</span>
+              </div>
+              <div class="card-stats"><span><i class="fa fa-heart"></i> 318</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="card">
+          <div class="card-thumb">
+            <div class="img-placeholder img-p8"><i class="fa fa-palette" style="font-size:2rem"></i></div>
+            <span class="badge badge-photo">Photo</span>
+            <div class="play-overlay"><div class="play-btn sm"><i class="fa fa-expand"></i></div></div>
+          </div>
+          <div class="card-body">
+            <div class="meta"><span class="cat-tag">Abstract</span></div>
+            <div class="card-title">Pigment & Light – Studio Work</div>
+            <div class="card-footer-row">
+              <div class="author-row">
+                <div class="avatar" style="background:linear-gradient(135deg,#ffd700,#a06000)">RI</div>
+                <span class="author-name">Raza Iqbal</span>
+              </div>
+              <div class="card-stats"><span><i class="fa fa-eye"></i> 3.2K</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Wide Row (Video Spotlight) ── -->
+      <div class="section-header">
+        <div class="section-title">Video Spotlight <span>New Releases</span></div>
+        <a href="#" class="see-all">View All <i class="fa fa-arrow-right"></i></a>
+      </div>
+
+      <div class="wide-row">
+        <div class="card">
+          <div class="card-thumb">
+            <div class="img-placeholder img-p9"><i class="fa fa-film" style="font-size:2.5rem"></i></div>
+            <span class="badge badge-video">Video</span>
+            <div class="play-overlay"><div class="play-btn"><i class="fa fa-play"></i></div></div>
+            <span class="duration">12:05</span>
+          </div>
+          <div class="card-body">
+            <div class="meta"><span class="cat-tag">Documentary</span><span class="dot"></span><span>March 2024</span></div>
+            <div class="card-title">Karakorum Highway – A Visual Journey</div>
+            <div class="card-desc">A sweeping documentary following the ancient silk road through Pakistan's most dramatic landscapes.</div>
+            <div class="card-footer-row">
+              <div class="author-row">
+                <div class="avatar" style="background:linear-gradient(135deg,#ff80ff,#800080)">MA</div>
+                <span class="author-name">Maryam Aziz</span>
+              </div>
+              <div class="card-stats">
+                <span><i class="fa fa-eye"></i> 22K</span>
+                <span><i class="fa fa-heart"></i> 1.4K</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-thumb">
+            <div class="img-placeholder img-p10"><i class="fa fa-water" style="font-size:2.5rem"></i></div>
+            <span class="badge badge-video">Video</span>
+            <div class="play-overlay"><div class="play-btn"><i class="fa fa-play"></i></div></div>
+            <span class="duration">8:33</span>
+          </div>
+          <div class="card-body">
+            <div class="meta"><span class="cat-tag">Wildlife</span><span class="dot"></span><span>February 2024</span></div>
+            <div class="card-title">Mangrove Delta – Underwater Exploration</div>
+            <div class="card-desc">An intimate look at the teeming ecosystem of the Indus delta, shot entirely underwater and from the air.</div>
+            <div class="card-footer-row">
+              <div class="author-row">
+                <div class="avatar" style="background:linear-gradient(135deg,#80ffff,#006080)">OM</div>
+                <span class="author-name">Omar Mirza</span>
+              </div>
+              <div class="card-stats">
+                <span><i class="fa fa-eye"></i> 17.5K</span>
+                <span><i class="fa fa-heart"></i> 980</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-thumb">
+            <div class="img-placeholder img-p1"><i class="fa fa-mountain" style="font-size:2.5rem"></i></div>
+            <span class="badge badge-photo">Photo</span>
+            <div class="play-overlay"><div class="play-btn"><i class="fa fa-expand"></i></div></div>
+          </div>
+          <div class="card-body">
+            <div class="meta"><span class="cat-tag">Landscape</span><span class="dot"></span><span>March 2024</span></div>
+            <div class="card-title">Himalayan Monastery – Dawn Light Series</div>
+            <div class="card-desc">60 photographs taken across five mornings at a 4,200m altitude monastery in Gilgit-Baltistan.</div>
+            <div class="card-footer-row">
+              <div class="author-row">
+                <div class="avatar" style="background:linear-gradient(135deg,#ffe080,#806000)">KR</div>
+                <span class="author-name">Kamran Raja</span>
+              </div>
+              <div class="card-stats">
+                <span><i class="fa fa-eye"></i> 11.2K</span>
+                <span><i class="fa fa-heart"></i> 672</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /content -->
+
+    <!-- ──────────────── FOOTER ────────────────────── -->
+    <footer>
+      <div class="footer-top">
+        <div class="footer-col">
+          <h4>Catalog Z</h4>
+          <ul>
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Our Mission</a></li>
+            <li><a href="#">Careers</a></li>
+            <li><a href="#">Press Kit</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Explore</h4>
+          <ul>
+            <li><a href="#">Photos</a></li>
+            <li><a href="#">Videos</a></li>
+            <li><a href="#">Collections</a></li>
+            <li><a href="#">Exhibitions</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Creators</h4>
+          <ul>
+            <li><a href="#">Upload Work</a></li>
+            <li><a href="#">Licensing</a></li>
+            <li><a href="#">Creator Forum</a></li>
+            <li><a href="#">Earnings</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Support</h4>
+          <ul>
+            <li><a href="#">Help Center</a></li>
+            <li><a href="#">Contact Us</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms of Use</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2024 Catalog Z. Built with ❤ using pure HTML &amp; CSS Flexbox.</span>
+        <div class="social-links">
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-youtube"></i></a>
+          <a href="#"><i class="fab fa-behance"></i></a>
+          <a href="#"><i class="fab fa-dribbble"></i></a>
+        </div>
+      </div>
+    </footer>
+
+  </div><!-- /main -->
+</div><!-- /wrapper -->
+
+<script>
+  // Filter tabs toggle
+  document.querySelectorAll('.filter-tab').forEach(btn => {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+
+  // View toggle (grid/list)
+  const viewBtns = document.querySelectorAll('.topbar-actions button:not(.filter-tab)');
+  viewBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      if (this.querySelector('.fa-th') || this.querySelector('.fa-list')) {
+        viewBtns.forEach(b => {
+          if (b.querySelector('.fa-th') || b.querySelector('.fa-list')) b.classList.remove('active');
+        });
+        this.classList.add('active');
+      }
+    });
+  });
+
+  // Sidebar nav highlight
+  document.querySelectorAll('.sidebar-nav a').forEach(a => {
+    a.addEventListener('click', function(e) {
+      e.preventDefault();
+      document.querySelectorAll('.sidebar-nav a').forEach(x => x.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+</script>
+</body>
+</html>
